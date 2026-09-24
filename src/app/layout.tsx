@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const siteUrl = "https://abdullahasim-dev.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://abdullahasim-dev.vercel.app"),
+  metadataBase: new URL(siteUrl),
 
   title: {
     default: "Abdullah Asim | Full-Stack Developer",
@@ -26,18 +28,28 @@ export const metadata: Metadata = {
 
   authors: [{ name: "Abdullah Asim" }],
   creator: "Abdullah Asim",
+  publisher: "Abdullah Asim",
 
   alternates: {
-    canonical: "https://abdullahasim-dev.vercel.app",
+    canonical: siteUrl,
   },
 
   openGraph: {
     title: "Abdullah Asim | Full-Stack Developer",
     description:
       "Portfolio of Abdullah Asim — Full-Stack Developer specializing in React, Next.js, SaaS applications, and AI automation.",
-    url: "https://abdullahasim-dev.vercel.app",
+    url: siteUrl,
     siteName: "Abdullah Asim",
     type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "/profile.webp",
+        width: 800,
+        height: 800,
+        alt: "Abdullah Asim - Full-Stack Developer",
+      },
+    ],
   },
 
   twitter: {
@@ -45,6 +57,7 @@ export const metadata: Metadata = {
     title: "Abdullah Asim | Full-Stack Developer",
     description:
       "Full-Stack Developer specializing in React, Next.js, SaaS applications, and AI automation.",
+    images: ["/profile.webp"],
   },
 
   robots: {
@@ -53,6 +66,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 
@@ -66,9 +82,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Abdullah Asim",
+    url: siteUrl,
+    jobTitle: "Full-Stack Developer",
+    description:
+      "Full-Stack Developer specializing in React, Next.js, Node.js, SaaS applications, and AI automation.",
+    image: `${siteUrl}/profile.webp`,
+    sameAs: [
+      "https://github.com/Abdullah-Asim-dev",
+      "https://www.linkedin.com/in/abdullah-asim-dev/",
+    ],
+  };
+
   return (
     <html lang="en">
-      <body className="antialiased bg-[#040911]">{children}</body>
+      <body className="antialiased bg-[#040911]">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+
+        {children}
+      </body>
     </html>
   );
 }
+
