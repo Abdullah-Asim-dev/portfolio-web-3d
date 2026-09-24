@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://abdullahasimdev.netlify.app"),
+  metadataBase: new URL("https://abdullahasim-dev.vercel.app"),
 
   title: {
     default: "Abdullah Asim | Full-Stack Developer",
@@ -25,18 +25,17 @@ export const metadata: Metadata = {
   ],
 
   authors: [{ name: "Abdullah Asim" }],
-
   creator: "Abdullah Asim",
 
   alternates: {
-    canonical: "https://abdullahasimdev.netlify.app",
+    canonical: "https://abdullahasim-dev.vercel.app",
   },
 
   openGraph: {
     title: "Abdullah Asim | Full-Stack Developer",
     description:
       "Portfolio of Abdullah Asim — Full-Stack Developer specializing in React, Next.js, SaaS applications, and AI automation.",
-    url: "https://abdullahasimdev.netlify.app",
+    url: "https://abdullahasim-dev.vercel.app",
     siteName: "Abdullah Asim",
     type: "website",
   },
