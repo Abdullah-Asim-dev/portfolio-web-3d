@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const siteUrl = "https://abdullahasim-dev.vercel.app";
@@ -108,8 +109,9 @@ export default function RootLayout({
         />
 
         {children}
+
+        <GoogleAnalytics gaId="G-S923PMDYVR" />
       </body>
     </html>
   );
 }
-
