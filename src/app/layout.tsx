@@ -1,10 +1,62 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-// 🚀 FIXED METADATA: Browser tab parameters updated with name and field matrix
 export const metadata: Metadata = {
-  title: "Abdullah Asim | Full-Stack Developer & AI  Developer",
-  description: "Official engineering portfolio of Abdullah Asim. Specializing in Next.js SaaS setups, n8n automations, and Vapi AI calling voice agents.",
+  metadataBase: new URL("https://abdullahasimdev.netlify.app"),
+
+  title: {
+    default: "Abdullah Asim | Full-Stack Developer",
+    template: "%s | Abdullah Asim",
+  },
+
+  description:
+    "Abdullah Asim is a Full-Stack Developer specializing in React, Next.js, Node.js, SaaS applications, and AI automation.",
+
+  keywords: [
+    "Abdullah Asim",
+    "Abdullah Asim Dev",
+    "Abdullah Asim Developer",
+    "Full-Stack Developer",
+    "React Developer",
+    "Next.js Developer",
+    "AI Automation",
+    "Web Developer",
+    "Pakistan Developer",
+  ],
+
+  authors: [{ name: "Abdullah Asim" }],
+
+  creator: "Abdullah Asim",
+
+  alternates: {
+    canonical: "https://abdullahasimdev.netlify.app",
+  },
+
+  openGraph: {
+    title: "Abdullah Asim | Full-Stack Developer",
+    description:
+      "Portfolio of Abdullah Asim — Full-Stack Developer specializing in React, Next.js, SaaS applications, and AI automation.",
+    url: "https://abdullahasimdev.netlify.app",
+    siteName: "Abdullah Asim",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Abdullah Asim | Full-Stack Developer",
+    description:
+      "Full-Stack Developer specializing in React, Next.js, SaaS applications, and AI automation.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+
   icons: {
     icon: "/favicon.ico",
   },
@@ -17,9 +69,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-[#040911]">
-        {children}
-      </body>
+      <body className="antialiased bg-[#040911]">{children}</body>
     </html>
   );
 }

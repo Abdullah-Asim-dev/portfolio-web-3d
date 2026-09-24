@@ -42,7 +42,7 @@ function useMousePosition() {
 }
 
 /* =========================================================
-   MAIN PARTICLE FIELD
+   MAIN PARTICLES
 ========================================================= */
 
 function MainParticles() {
@@ -50,7 +50,8 @@ function MainParticles() {
   const mouse = useMousePosition();
 
   const particles = useMemo(() => {
-    const count = 1800;
+    // Reduced from 1800 → 700
+    const count = 700;
 
     const positions = new Float32Array(count * 3);
 
@@ -75,33 +76,20 @@ function MainParticles() {
 
     const time = state.clock.getElapsedTime();
 
-    /*
-      Smooth mouse movement
-    */
+    const targetX = mouse.current.y * 0.12;
+    const targetY = mouse.current.x * 0.18;
 
-    const targetX =
-      mouse.current.y * 0.12;
+    pointsRef.current.rotation.x = THREE.MathUtils.lerp(
+      pointsRef.current.rotation.x,
+      targetX,
+      0.025
+    );
 
-    const targetY =
-      mouse.current.x * 0.18;
-
-    pointsRef.current.rotation.x =
-      THREE.MathUtils.lerp(
-        pointsRef.current.rotation.x,
-        targetX,
-        0.025
-      );
-
-    pointsRef.current.rotation.y =
-      THREE.MathUtils.lerp(
-        pointsRef.current.rotation.y,
-        targetY,
-        0.025
-      );
-
-    /*
-      Continuous movement
-    */
+    pointsRef.current.rotation.y = THREE.MathUtils.lerp(
+      pointsRef.current.rotation.y,
+      targetY,
+      0.025
+    );
 
     pointsRef.current.position.x =
       Math.sin(time * 0.08) * 0.12;
@@ -109,7 +97,7 @@ function MainParticles() {
     pointsRef.current.position.y =
       Math.cos(time * 0.12) * 0.1;
 
-    pointsRef.current.rotation.z += 0.00018;
+    pointsRef.current.rotation.z += 0.0001;
   });
 
   return (
@@ -117,14 +105,14 @@ function MainParticles() {
       ref={pointsRef}
       positions={particles}
       stride={3}
-      frustumCulled={false}
+      frustumCulled
     >
       <PointMaterial
         color={LIGHT}
         size={0.045}
         sizeAttenuation
         transparent
-        opacity={0.75}
+        opacity={0.7}
         depthWrite={false}
       />
     </Points>
@@ -132,14 +120,15 @@ function MainParticles() {
 }
 
 /* =========================================================
-   LARGE GLOWING PARTICLES
+   LARGE PARTICLES
 ========================================================= */
 
 function LargeParticles() {
   const pointsRef = useRef<THREE.Points>(null);
 
   const particles = useMemo(() => {
-    const count = 100;
+    // Reduced from 100 → 40
+    const count = 40;
 
     const positions = new Float32Array(count * 3);
 
@@ -176,14 +165,14 @@ function LargeParticles() {
       ref={pointsRef}
       positions={particles}
       stride={3}
-      frustumCulled={false}
+      frustumCulled
     >
       <PointMaterial
         color={LIGHT}
-        size={0.11}
+        size={0.1}
         sizeAttenuation
         transparent
-        opacity={0.9}
+        opacity={0.85}
         depthWrite={false}
       />
     </Points>
@@ -199,7 +188,8 @@ function NetworkParticles() {
   const mouse = useMousePosition();
 
   const nodes = useMemo(() => {
-    return Array.from({ length: 65 }, () => ({
+    // Reduced from 65 → 30
+    return Array.from({ length: 30 }, () => ({
       position: new THREE.Vector3(
         (Math.random() - 0.5) * 17,
         (Math.random() - 0.5) * 9,
@@ -212,10 +202,6 @@ function NetworkParticles() {
     if (!groupRef.current) return;
 
     const time = state.clock.getElapsedTime();
-
-    /*
-      Slow network movement
-    */
 
     groupRef.current.rotation.y =
       Math.sin(time * 0.08) * 0.025 +
@@ -234,9 +220,7 @@ function NetworkParticles() {
           {/* NODE */}
 
           <mesh position={node.position}>
-            <sphereGeometry
-              args={[0.035, 8, 8]}
-            />
+            <sphereGeometry args={[0.035, 6, 6]} />
 
             <meshBasicMaterial
               color={
@@ -257,8 +241,8 @@ function NetworkParticles() {
               ]}
               color={PRIMARY}
               transparent
-              opacity={0.22}
-              lineWidth={0.6}
+              opacity={0.18}
+              lineWidth={0.5}
             />
           )}
 
@@ -269,14 +253,15 @@ function NetworkParticles() {
 }
 
 /* =========================================================
-   MOVING LIGHT STREAKS
+   LIGHT STREAKS
 ========================================================= */
 
 function LightStreaks() {
   const groupRef = useRef<THREE.Group>(null);
 
   const streaks = useMemo(() => {
-    return Array.from({ length: 14 }, (_, index) => ({
+    // Reduced from 14 → 6
+    return Array.from({ length: 6 }, (_, index) => ({
       x: (Math.random() - 0.5) * 18,
       y: (Math.random() - 0.5) * 9,
       z: (Math.random() - 0.5) * 3,
@@ -294,6 +279,8 @@ function LightStreaks() {
     groupRef.current.children.forEach(
       (child, index) => {
         const streak = streaks[index];
+
+        if (!streak) return;
 
         child.position.x =
           streak.x +
@@ -317,8 +304,8 @@ function LightStreaks() {
           ]}
           color={PRIMARY}
           transparent
-          opacity={0.35}
-          lineWidth={1}
+          opacity={0.3}
+          lineWidth={0.8}
         />
       ))}
     </group>
@@ -332,28 +319,11 @@ function LightStreaks() {
 function Scene() {
   return (
     <>
-      <ambientLight intensity={0.2} />
-
-      <pointLight
-        position={[0, 0, 5]}
-        intensity={2}
-        distance={15}
-        color={PRIMARY}
-      />
-
-      {/* MAIN PARTICLES */}
-
       <MainParticles />
-
-      {/* BIG PARTICLES */}
 
       <LargeParticles />
 
-      {/* NETWORK */}
-
       <NetworkParticles />
-
-      {/* MOVING STREAKS */}
 
       <LightStreaks />
     </>
@@ -366,10 +336,9 @@ function Scene() {
 
 export default function ParticleBackground() {
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none">
-
+    <div className="pointer-events-none fixed inset-0 z-0">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, 1.25]}
         camera={{
           position: [0, 0, 8],
           fov: 55,
@@ -377,21 +346,18 @@ export default function ParticleBackground() {
           far: 100,
         }}
         gl={{
-          antialias: true,
+          antialias: false,
           alpha: true,
           powerPreference: 'high-performance',
         }}
       >
-
         <color
           attach="background"
           args={[BACKGROUND]}
         />
 
         <Scene />
-
       </Canvas>
-
     </div>
   );
 }
